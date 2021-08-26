@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Persistence.Connections;
 using Persistence.Contexts;
+using WebApplication.Reposities;
+using WebApplication.Services;
 
 namespace WebApplication
 {
@@ -33,6 +35,8 @@ namespace WebApplication
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddScoped<IApplicationWriteDbConnection, ApplicationWriteDbConnection>();
             services.AddScoped<IApplicationReadDbConnection, ApplicationReadDbConnection>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddControllers();
         }
 
