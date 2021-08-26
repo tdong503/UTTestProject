@@ -1,11 +1,5 @@
-using System;
-using System.Data.Common;
-using System.Linq;
 using System.Threading.Tasks;
-using Domain.Entities;
-using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApplication.DTOs;
 using WebApplication.Services;
 

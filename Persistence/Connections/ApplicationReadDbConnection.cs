@@ -7,37 +7,39 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
 namespace Persistence.Connections
 {
     public class ApplicationReadDbConnection : IApplicationReadDbConnection, IDisposable
     {
-        private readonly IDbConnection connection;
+        private readonly IDbConnection _connection;
 
-        public ApplicationReadDbConnection(IConfiguration configuration)
+        public ApplicationReadDbConnection(IApplicationDbContext applicationDbContext)
         {
-            connection = new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            _connection = applicationDbContext.Database.GetDbConnection();
+            //connection = new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
 
         public async Task<IReadOnlyList<T>> QueryAsync<T>(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
         {
-            return (await connection.QueryAsync<T>(sql, param, transaction)).AsList();
+            return (await _connection.QueryAsync<T>(sql, param, transaction)).AsList();
         }
 
         public async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
         {
-            return await connection.QueryFirstOrDefaultAsync<T>(sql, param, transaction);
+            return await _connection.QueryFirstOrDefaultAsync<T>(sql, param, transaction);
         }
 
         public async Task<T> QuerySingleAsync<T>(string sql, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
         {
-            return await connection.QuerySingleAsync<T>(sql, param, transaction);
+            return await _connection.QuerySingleAsync<T>(sql, param, transaction);
         }
 
         public void Dispose()
         {
-            connection.Dispose();
+            _connection.Dispose();
         }
     }
 }

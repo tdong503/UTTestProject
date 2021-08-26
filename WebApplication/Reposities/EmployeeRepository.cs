@@ -38,7 +38,7 @@ namespace WebApplication.Reposities
                         throw new Exception("Department Already Exists");
                     }
                     //Add Department
-                    var addDepartmentQuery = $"INSERT INTO Departments(Name,Description) VALUES('{employeeDto.Department.Name}','{employeeDto.Department.Description}');SELECT CAST(SCOPE_IDENTITY() as int)";
+                    var addDepartmentQuery = $"INSERT INTO \"Departments\"(\"Name\",\"Description\") VALUES('{employeeDto.Department.Name}','{employeeDto.Department.Description}');SELECT CAST(currval(pg_get_serial_sequence('\"Departments\"', 'Id')) as int)";
                     var departmentId = await _writeDbConnection.QuerySingleAsync<int>(addDepartmentQuery, transaction: transaction);
                     //Check if Department Id is not Zero.
                     if (departmentId == 0)
